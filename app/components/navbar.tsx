@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import logo from "@/assets/logo-white.png";
-import profileDefault from "@/assets/profile.png";
+import logo from "@/public/assets/logo-white.png";
+import profileDefault from "@/public/assets/profile.png";
 import { FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import Link from "next/link";

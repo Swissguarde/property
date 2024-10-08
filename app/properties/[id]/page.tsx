@@ -2,6 +2,7 @@
 
 import PropertyDetail from "@/app/components/property-detail";
 import PropertyHeaderImage from "@/app/components/property-header-image";
+import Spinner from "@/app/components/spinner";
 import { fetchProperty } from "@/utils/requests";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -31,7 +32,7 @@ export default function PropertyDetailPage() {
 
   if (!property && !loading) {
     return (
-      <h1 className="text-center text-2xl font-bold mt-10">
+      <h1 className="mt-10 text-center text-2xl font-bold">
         Property Not Found
       </h1>
     );
@@ -39,41 +40,42 @@ export default function PropertyDetailPage() {
 
   return (
     <>
+      {loading && <Spinner loading={loading} />}
       {!loading && property && (
         <>
           <PropertyHeaderImage image={property.images[0]} />
           <section>
-            <div className="container m-auto py-6 px-6">
+            <div className="container m-auto p-6">
               <Link
                 href="/properties.html"
-                className="text-teal-500 hover:text-teal-600 flex items-center"
+                className="flex items-center text-teal-500 hover:text-teal-600"
               >
                 <FaArrowLeft className="mr-2" /> Back to Properties
               </Link>
             </div>
           </section>
           <section className="bg-teal-50">
-            <div className="container m-auto py-10 px-6">
-              <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
+            <div className="container m-auto px-6 py-10">
+              <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-70/30">
                 <PropertyDetail property={property} />
 
                 {/* <!-- Sidebar --> */}
                 <aside className="space-y-4">
                   <div>
-                    <button className="bg-teal-500 hover:bg-teal-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center">
+                    <button className="flex w-full items-center justify-center rounded-full bg-teal-500 px-4 py-2 font-bold text-white hover:bg-teal-600">
                       <FaBookmark className="mr-2" />
                       Bookmark Property
                     </button>
                   </div>
                   <div>
-                    <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center">
+                    <button className="flex w-full items-center justify-center rounded-full bg-orange-500 px-4 py-2 font-bold text-white hover:bg-orange-600">
                       <FaShare className="mr-2" /> Share Property
                     </button>
                   </div>
 
                   {/* <!-- Contact Form --> */}
-                  <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="text-xl font-bold mb-6">
+                  <div className="rounded-lg bg-white p-6 shadow-md">
+                    <h3 className="mb-6 text-xl font-bold">
                       Contact Property Manager
                     </h3>
                     <form
@@ -83,13 +85,13 @@ export default function PropertyDetailPage() {
                     >
                       <div className="mb-4">
                         <label
-                          className="block text-gray-700 text-sm font-bold mb-2"
+                          className="mb-2 block text-sm font-bold text-gray-700"
                           htmlFor="email"
                         >
                           Email:
                         </label>
                         <input
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                           id="email"
                           type="email"
                           placeholder="Enter your email"
@@ -97,20 +99,20 @@ export default function PropertyDetailPage() {
                       </div>
                       <div className="mb-4">
                         <label
-                          className="block text-gray-700 text-sm font-bold mb-2"
+                          className="mb-2 block text-sm font-bold text-gray-700"
                           htmlFor="message"
                         >
                           Message:
                         </label>
                         <textarea
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-44 focus:outline-none focus:shadow-outline"
+                          className="focus:shadow-outline h-44 w-full appearance-none rounded border px-3 py-2 text-gray-700 shadow focus:outline-none"
                           id="message"
                           placeholder="Enter your message"
                         ></textarea>
                       </div>
                       <div>
                         <button
-                          className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
+                          className="focus:shadow-outline flex w-full items-center justify-center rounded-full bg-teal-500 px-4 py-2 font-bold text-white hover:bg-teal-600 focus:outline-none"
                           type="submit"
                         >
                           <FaPaperPlane className="mr-2" /> Send Message

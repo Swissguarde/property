@@ -3,18 +3,45 @@ import Image from "next/image";
 import logo from "@/public/assets/logo-white.png";
 import profileDefault from "@/public/assets/profile.png";
 import { FaGoogle } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  signIn,
+  signOut,
+  useSession,
+  getProviders,
+  LiteralUnion,
+  ClientSafeProvider,
+} from "next-auth/react";
+import { BuiltInProviderType } from "next-auth/providers/index";
+
+type Providers = Record<
+  LiteralUnion<BuiltInProviderType, string>,
+  ClientSafeProvider
+> | null;
 
 export default function Navbar() {
+  const { data: session } = useSession();
+  const profileImage = session?.user.image;
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const isLoggedIn = false;
+  const [providers, setProviders] = useState<Providers>(null);
+
   const pathname = usePathname();
 
+  useEffect(() => {
+    const setAuthProviders = async () => {
+      const res = await getProviders();
+      setProviders(res);
+    };
+
+    setAuthProviders();
+  }, []);
+
   return (
-    <nav className="bg-teal-700 border-b border-teal-500">
+    <nav className="border-b border-teal-500 bg-teal-700">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-20 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
@@ -51,7 +78,7 @@ export default function Navbar() {
             <a className="flex flex-shrink-0 items-center" href="/">
               <Image className="h-10 w-auto" src={logo} alt="PropertyPulse" />
 
-              <span className="hidden md:block text-white text-2xl font-bold ml-2">
+              <span className="ml-2 hidden text-2xl font-bold text-white md:block">
                 Property
               </span>
             </a>
@@ -62,7 +89,7 @@ export default function Navbar() {
                   href="/"
                   className={`${
                     pathname === "/" && "bg-black"
-                  } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                  } rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white`}
                 >
                   Home
                 </Link>
@@ -70,16 +97,16 @@ export default function Navbar() {
                   href="/properties"
                   className={`${
                     pathname === "/properties" && "bg-black"
-                  } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                  } rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white`}
                 >
                   Properties
                 </Link>
-                {isLoggedIn && (
+                {session && (
                   <Link
                     href="/properties/add"
                     className={`${
                       pathname === "/properties/add" && "bg-black"
-                    } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                    } rounded-md px-3 py-2 text-white hover:bg-gray-900 hover:text-white`}
                   >
                     Add Property
                   </Link>
@@ -89,21 +116,28 @@ export default function Navbar() {
           </div>
 
           {/* <!-- Right Side Menu (Logged Out) --> */}
-          {!isLoggedIn && (
-            <div className="hidden md:block md:ml-6">
+          {!session && (
+            <div className="hidden md:ml-6 md:block">
               <div className="flex items-center">
-                <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
-                  <FaGoogle className="fa-brands fa-google text-white mr-2" />
-                  <span>Login or Register</span>
-                </button>
+                {providers &&
+                  Object.values(providers).map((provider, i) => (
+                    <button
+                      key={i}
+                      onClick={() => signIn(provider.id)}
+                      className="flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white"
+                    >
+                      <FaGoogle className="fa-brands fa-google mr-2 text-white" />
+                      <span>Login or Register</span>
+                    </button>
+                  ))}
               </div>
             </div>
           )}
 
           {/* <!-- Right Side Menu (Logged In) --> */}
-          {isLoggedIn && (
+          {session && (
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
-              <Link href="messages" className="relative group">
+              <Link href="messages" className="group relative">
                 <button
                   type="button"
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -125,7 +159,7 @@ export default function Navbar() {
                     />
                   </svg>
                 </button>
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                <span className="absolute right-0 top-0 inline-flex -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-red-600 px-2 py-1 text-xs font-bold leading-none text-white">
                   2
                   {/* <!-- Replace with the actual number of notifications --> */}
                 </span>
@@ -145,8 +179,10 @@ export default function Navbar() {
                     <span className="sr-only">Open user menu</span>
                     <Image
                       className="h-8 w-8 rounded-full"
-                      src={profileDefault}
-                      alt=""
+                      src={profileImage || profileDefault}
+                      alt="user image"
+                      width={40}
+                      height={40}
                     />
                   </button>
                 </div>
@@ -167,11 +203,14 @@ export default function Navbar() {
                       role="menuitem"
                       tabIndex={-1}
                       id="user-menu-item-0"
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                      }}
                     >
                       Your Profile
                     </Link>
                     <Link
-                      href="saved-properties"
+                      href="/saved-properties"
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex={-1}
@@ -182,15 +221,18 @@ export default function Navbar() {
                     >
                       Saved Properties
                     </Link>
-                    <Link
-                      href="#"
+                    <button
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex={-1}
                       id="user-menu-item-2"
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        signOut();
+                      }}
                     >
                       Sign Out
-                    </Link>
+                    </button>
                   </div>
                 )}
               </div>
@@ -207,7 +249,7 @@ export default function Navbar() {
               href="/"
               className={`${
                 pathname === "/" && "bg-black"
-              } text-white block rounded-md px-3 py-2 text-base font-medium`}
+              } block rounded-md px-3 py-2 text-base font-medium text-white`}
             >
               Home
             </Link>
@@ -215,26 +257,32 @@ export default function Navbar() {
               href="/properties"
               className={`${
                 pathname === "/properties" && "bg-black"
-              } text-white block rounded-md px-3 py-2 text-base font-medium`}
+              } block rounded-md px-3 py-2 text-base font-medium text-white`}
             >
               Properties
             </Link>
-            {isLoggedIn && (
+            {session && (
               <Link
                 href="/properties/add"
                 className={`${
                   pathname === "/properties/add" && "bg-black"
-                } text-white block rounded-md px-3 py-2 text-base font-medium`}
+                } block rounded-md px-3 py-2 text-base font-medium text-white`}
               >
                 Add Property
               </Link>
             )}
-            {!isLoggedIn && (
-              <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4">
-                <i className="fa-brands fa-google mr-2"></i>
-                <span>Login or Register</span>
-              </button>
-            )}
+            {!session &&
+              providers &&
+              Object.values(providers).map((provider, i) => (
+                <button
+                  key={i}
+                  onClick={() => signIn(provider.id)}
+                  className="flex items-center rounded-md bg-gray-700 px-3 py-2 text-white hover:bg-gray-900 hover:text-white"
+                >
+                  <FaGoogle className="fa-brands kfa-google mr-2 text-white" />
+                  <span>Login or Register</span>
+                </button>
+              ))}
           </div>
         </div>
       )}

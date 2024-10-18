@@ -2,6 +2,7 @@
 
 import PropertyDetail from "@/app/components/property-detail";
 import PropertyHeaderImage from "@/app/components/property-header-image";
+import PropertyImages from "@/app/components/property-images";
 import Spinner from "@/app/components/spinner";
 import { fetchProperty } from "@/utils/requests";
 import Link from "next/link";
@@ -124,6 +125,7 @@ export default function PropertyDetailPage() {
               </div>
             </div>
           </section>
+          <PropertyImages images={property.images} />
         </>
       )}
     </>

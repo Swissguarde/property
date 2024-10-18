@@ -29,3 +29,31 @@ interface IProperty {
   createdAt: string;
   updatedAt: string;
 }
+
+interface PropertyData {
+  type: string;
+  name: string;
+  description: string;
+  location: {
+    street: string;
+    city: string;
+    state: string;
+    zipcode: string;
+  };
+  beds: string;
+  baths: string;
+  square_feet: string;
+  amenities: string[];
+  rates: {
+    weekly: string;
+    monthly: string;
+    nightly: string;
+  };
+  seller_info: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  images: string[];
+  owner?: string;
+}

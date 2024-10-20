@@ -105,7 +105,7 @@ export default function AddPropertyForm() {
     if (!files) return;
 
     // Clone images array
-    const updatedImages = [...fields.images];
+    const updatedImages = [...fields.images!];
 
     // Add new files to the array
     for (const file of Array.from(files)) {

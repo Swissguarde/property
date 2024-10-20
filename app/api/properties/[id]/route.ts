@@ -65,3 +65,63 @@ export const DELETE = async (
     return new Response("Something Went Wrong", { status: 500 });
   }
 };
+
+export const PUT = async (
+  request: NextRequest,
+  { params }: { params: { id: string } },
+) => {
+  try {
+    await connectDB();
+
+    const userSession = await getUserSesssion();
+    if (!userSession || !userSession.userId)
+      return new Response("User ID is required", { status: 401 });
+
+    const { id } = params;
+    const { userId } = userSession;
+
+    const formData = await request.formData();
+    const amenities: string[] = formData.getAll("amenities") as string[];
+
+    const existingProperty = await Property.findById(id);
+    if (!existingProperty)
+      return new Response("Property does not exist", { status: 404 });
+
+    if (existingProperty.owner.toString() !== userId) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const propertyData: PropertyData = {
+      type: formData.get("type") as string,
+      name: formData.get("name") as string,
+      description: formData.get("description") as string,
+      location: {
+        street: formData.get("location.street") as string,
+        city: formData.get("location.city") as string,
+        state: formData.get("location.state") as string,
+        zipcode: formData.get("location.zipcode") as string,
+      },
+      beds: formData.get("beds") as string,
+      baths: formData.get("baths") as string,
+      square_feet: formData.get("square_feet") as string,
+      amenities,
+      rates: {
+        weekly: formData.get("rates.weekly") as string,
+        monthly: formData.get("rates.monthly") as string,
+        nightly: formData.get("rates.nightly") as string,
+      },
+      seller_info: {
+        name: formData.get("seller_info.name") as string,
+        email: formData.get("seller_info.email") as string,
+        phone: formData.get("seller_info.phone") as string,
+      },
+      owner: userId,
+    };
+
+    const updatedProperty = await Property.findByIdAndUpdate(id, propertyData);
+
+    return new Response(JSON.stringify(updatedProperty), { status: 200 });
+  } catch (error) {
+    console.log(error);
+  }
+};

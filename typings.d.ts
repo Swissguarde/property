@@ -55,6 +55,6 @@ interface PropertyData {
     email: string;
     phone: string;
   };
-  images: string[];
+  images?: string[];
   owner?: string;
 }

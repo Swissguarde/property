@@ -31,6 +31,7 @@ interface IProperty {
 }
 
 interface PropertyData {
+  _id?: string;
   type: string;
   name: string;
   description: string;

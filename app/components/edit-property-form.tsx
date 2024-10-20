@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 
-export default function AddPropertyForm() {
+export default function PropertyEditForm() {
   const [fields, setFields] = useState<PropertyData>({
     type: "",
     name: "",
@@ -82,22 +82,6 @@ export default function AddPropertyForm() {
       amenities: updatedAmenities,
     }));
   };
-  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { files } = e.target;
-
-  //   if (files && files.length > 0) {
-  //     const updatedImages = [...images]; // Assuming `images` is part of your fields state
-
-  //     Array.from(files).forEach((file) => {
-  //       updatedImages.push(file);
-  //     });
-
-  //     setFields((prev) => ({
-  //       ...prev,
-  //       images: updatedImages,
-  //     }));
-  //   }
-  // };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -120,9 +104,11 @@ export default function AddPropertyForm() {
     }));
   };
 
+  const handleSubmit = async () => {};
+
   return (
-    <form action="/api/properties" method="POST" encType="multipart/form-data">
-      <h2 className="mb-6 text-center text-3xl font-semibold">Add Property</h2>
+    <form onSubmit={handleSubmit}>
+      <h2 className="mb-6 text-center text-3xl font-semibold">Edit Property</h2>
       <div className="mb-4">
         <label htmlFor="type" className="mb-2 block font-bold text-gray-700">
           Property Type

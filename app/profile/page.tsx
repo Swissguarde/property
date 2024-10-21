@@ -37,8 +37,6 @@ export default function ProfilePage() {
   }, [session]);
 
   const handleDeleteProperty = async (propertyId: string) => {
-    console.log("propertyId", propertyId);
-
     const confirmed = window.confirm(
       "Are you sure you want to delete this property?",
     );
@@ -116,7 +114,7 @@ export default function ProfilePage() {
                       <Link href={`/properties/${_id}`}>
                         <Image
                           className="h-32 w-full rounded-md object-cover"
-                          src={images[0]}
+                          src={images![0]}
                           alt={name}
                           width={500}
                           height={100}

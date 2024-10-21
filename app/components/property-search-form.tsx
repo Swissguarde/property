@@ -10,13 +10,14 @@ export default function PropertySearchForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (location === "" || propertyType === "All") {
+    if (location === "" && propertyType === "All") {
       router.push("/properties");
     } else {
       const query = `?location=${location}&propertyType=${propertyType}`;
       router.push(`/properties/search-results${query}`);
     }
   };
+
   return (
     <section>
       <form
@@ -60,6 +61,7 @@ export default function PropertySearchForm() {
         <button
           type="submit"
           className="mt-4 w-full rounded-lg bg-teal-500 px-6 py-3 text-white hover:bg-teal-600 focus:outline-none focus:ring focus:ring-teal-500 md:ml-4 md:mt-0 md:w-auto"
+          disabled={location === ""}
         >
           Search
         </button>

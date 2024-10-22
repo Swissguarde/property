@@ -6,7 +6,7 @@ const override = {
   margin: "100px auto",
 };
 
-export default function Spinner({ loading }: { loading: boolean }) {
+export default function Spinner({ loading }: { loading?: boolean }) {
   return (
     <ClipLoader
       color="#14B8A6"

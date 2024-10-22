@@ -1,10 +1,11 @@
 "use client";
 
+import { useGlobalContext } from "@/context/global-context";
 import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 
 export default function UnreadMessageCount({ session }: { session: Session }) {
-  const [unreadCount, setUnreadCount] = useState(0);
+  const { unreadCount, setUnreadCount } = useGlobalContext();
   useEffect(() => {
     if (!session) return;
 

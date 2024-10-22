@@ -3,12 +3,26 @@ import cloudinary from "@/config/cloudinary";
 import connectDB from "@/config/database";
 import Property from "@/models/Property";
 import { getUserSesssion } from "@/utils/getUserSession";
+import { NextRequest } from "next/server";
 
-export const GET = async () => {
+export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
-    const properties = await Property.find({});
-    return new Response(JSON.stringify(properties), {
+    const page = parseInt(request.nextUrl.searchParams.get("page") || "1", 10);
+    const pageSize = parseInt(
+      request.nextUrl.searchParams.get("pageSize") || "1",
+      10,
+    );
+
+    const skip = (page - 1) * pageSize;
+
+    const total = await Property.countDocuments();
+    const properties = await Property.find({}).skip(skip).limit(pageSize);
+    const result = {
+      total,
+      properties,
+    };
+    return new Response(JSON.stringify(result), {
       status: 200,
     });
   } catch (error) {

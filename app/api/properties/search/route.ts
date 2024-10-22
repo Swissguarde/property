@@ -2,6 +2,8 @@ import connectDB from "@/config/database";
 import Property from "@/models/Property";
 import { NextRequest } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
@@ -10,7 +12,7 @@ export const GET = async (request: NextRequest) => {
     const propertyType = searchParams.get("propertyType");
 
     const locationPattern = new RegExp(location!, "i");
-    let query: {
+    const query: {
       $or: { [key: string]: RegExp }[];
       type?: RegExp;
     } = {

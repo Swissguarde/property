@@ -1,7 +1,8 @@
 import connectDB from "@/config/database";
 import Property from "@/models/Property";
+import { NextRequest } from "next/server";
 
-export const GET = async (request: Request) => {
+export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
     const { searchParams } = new URL(request.url);

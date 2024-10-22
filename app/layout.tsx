@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthProvider from "./components/auth-provider";
 import { GlobalProvider } from "@/context/global-context";
+import "photoswipe/dist/photoswipe.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

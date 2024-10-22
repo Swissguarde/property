@@ -33,7 +33,7 @@ export default function PropertyCard({ property }: Props) {
           <div className="text-gray-600">{property.type}</div>
           <h3 className="text-xl font-bold">{property.name}</h3>
         </div>
-        <h3 className="absolute right-[10px] top-[10px] rounded-lg bg-white px-4 py-2 text-right font-bold text-blue-500 md:text-center lg:text-right">
+        <h3 className="absolute right-[10px] top-[10px] rounded-lg bg-white px-4 py-2 text-right font-bold text-teal-500 md:text-center lg:text-right">
           ${getRateDisplay()}
         </h3>
 

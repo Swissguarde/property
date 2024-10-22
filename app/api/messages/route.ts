@@ -1,6 +1,7 @@
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import { getUserSesssion } from "@/utils/getUserSession";
+import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +38,7 @@ export const GET = async () => {
   }
 };
 
-export const POST = async (request: Request) => {
+export const POST = async (request: NextRequest) => {
   try {
     await connectDB();
     const { email, name, phone, message, property, recipient } =

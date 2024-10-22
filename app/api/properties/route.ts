@@ -10,7 +10,7 @@ export const GET = async (request: NextRequest) => {
     await connectDB();
     const page = parseInt(request.nextUrl.searchParams.get("page") || "1", 10);
     const pageSize = parseInt(
-      request.nextUrl.searchParams.get("pageSize") || "1",
+      request.nextUrl.searchParams.get("pageSize") || "6",
       10,
     );
 
@@ -30,7 +30,7 @@ export const GET = async (request: NextRequest) => {
   }
 };
 
-export const POST = async (request: Request) => {
+export const POST = async (request: NextRequest) => {
   try {
     await connectDB();
 

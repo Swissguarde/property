@@ -6,7 +6,7 @@ import { NextRequest } from "next/server";
 export const dynamic = "force-dynamic";
 
 export const PUT = async (
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } },
 ) => {
   try {
@@ -35,7 +35,7 @@ export const PUT = async (
 };
 
 export const DELETE = async (
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } },
 ) => {
   try {

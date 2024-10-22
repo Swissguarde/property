@@ -15,6 +15,7 @@ import {
   ClientSafeProvider,
 } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers/index";
+import UnreadMessageCount from "./unread-message-count";
 
 type Providers = Record<
   LiteralUnion<BuiltInProviderType, string>,
@@ -137,7 +138,7 @@ export default function Navbar() {
           {/* <!-- Right Side Menu (Logged In) --> */}
           {session && (
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
-              <Link href="messages" className="group relative">
+              <Link href="/messages" className="group relative">
                 <button
                   type="button"
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -159,10 +160,7 @@ export default function Navbar() {
                     />
                   </svg>
                 </button>
-                <span className="absolute right-0 top-0 inline-flex -translate-y-1/2 translate-x-1/2 transform items-center justify-center rounded-full bg-red-600 px-2 py-1 text-xs font-bold leading-none text-white">
-                  2
-                  {/* <!-- Replace with the actual number of notifications --> */}
-                </span>
+                <UnreadMessageCount session={session} />
               </Link>
               {/* <!-- Profile dropdown button --> */}
               <div className="relative ml-3">

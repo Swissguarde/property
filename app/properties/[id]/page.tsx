@@ -11,7 +11,7 @@ import { fetchProperty } from "@/utils/requests";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaArrowLeft, FaBookmark, FaPaperPlane, FaShare } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function PropertyDetailPage() {
   const { id } = useParams();

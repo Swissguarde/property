@@ -1,11 +1,10 @@
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import { getUserSesssion } from "@/utils/getUserSession";
-import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
   try {
     await connectDB();
 

@@ -2,7 +2,7 @@
 
 import { useGlobalContext } from "@/context/global-context";
 import { Session } from "next-auth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function UnreadMessageCount({ session }: { session: Session }) {
   const { unreadCount, setUnreadCount } = useGlobalContext();
@@ -21,7 +21,7 @@ export default function UnreadMessageCount({ session }: { session: Session }) {
       }
     };
     fetchUnreadCount();
-  }, [session]);
+  }, [session, setUnreadCount]);
   return (
     unreadCount > 0 && (
       <div>

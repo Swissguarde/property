@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function InfoBox({
   heading,
   backgroundColor = "bg-gray-100",
@@ -18,12 +16,12 @@ export default function InfoBox({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${backgroundColor} p-6 rounded-lg shadow-md`}>
+    <div className={`${backgroundColor} rounded-lg p-6 shadow-md`}>
       <h2 className={`${textColor} text-2xl font-bold`}>{heading}</h2>
-      <p className={`${textColor} mt-2 mb-4`}>{children}</p>
+      <p className={`${textColor} mb-4 mt-2`}>{children}</p>
       <a
         href={buttonInfo.link}
-        className={`inline-block ${buttonInfo.backgroundColor} text-white rounded-lg px-4 py-2 hover:opacity-80`}
+        className={`inline-block ${buttonInfo.backgroundColor} rounded-lg px-4 py-2 text-white hover:opacity-80`}
       >
         {buttonInfo.text}
       </a>

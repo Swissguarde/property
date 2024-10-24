@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import cloudinary from "@/config/cloudinary";
 import connectDB from "@/config/database";
 import Property from "@/models/Property";

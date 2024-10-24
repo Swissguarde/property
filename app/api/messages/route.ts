@@ -14,7 +14,7 @@ export const GET = async () => {
       return new Response("User ID is required", { status: 401 });
     }
     const { userId } = userSession;
-    const readMessages = await Message.find({
+    let readMessages = await Message.find({
       recipient: userId,
       read: true,
     })
@@ -22,13 +22,16 @@ export const GET = async () => {
       .populate("sender", "username")
       .populate("property", "name");
 
-    const unreadMessages = await Message.find({
+    let unreadMessages = await Message.find({
       recipient: userId,
       read: false,
     })
       .sort({ createdAt: -1 })
       .populate("sender", "username")
       .populate("property", "name");
+
+    readMessages = readMessages || [];
+    unreadMessages = unreadMessages || [];
 
     const messages = [...unreadMessages, ...readMessages];
     return new Response(JSON.stringify(messages), { status: 200 });

@@ -5,9 +5,13 @@ import Link from "next/link";
 export default async function HomeProperties() {
   const data = await fetchProperties();
 
-  const recentProperties: IProperty[] = data.properties
-    .sort(() => Math.random() - Math.random())
-    .slice(0, 3);
+  // const recentProperties: IProperty[] = data?.properties
+  //   .sort(() => Math.random() - Math.random())
+  //   .slice(0, 3);
+
+  const recentProperties: IProperty[] = data?.properties?.length
+    ? data.properties.sort(() => Math.random() - Math.random()).slice(0, 3)
+    : [];
 
   return (
     <>

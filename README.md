@@ -1,4 +1,19 @@
 
+# Property
+
+
+## Property Listing Platform
+
+This project is a **property listing platform** built with **Next.js**, **TypeScript**, **MongoDB**, and **NextAuth**. It allows users to **list** and **rent, properties**, offering features such as:
+
+- **User Authentication**: Secure login and account management via **NextAuth**.
+- **Property Listings**: Users can create and manage detailed property listings, including images, pricing, amenities, and more.
+- **Real-time Messaging**: Integrated messaging system for communication between property owners and potential buyers/renters.
+- **Responsive Design**: Optimized for both desktop and mobile platforms.
+- **Cloudinary Integration**: Efficient image upload and storage for property images.
+
+The platform aims to streamline property management and provide a seamless user experience for both sellers and buyers.
+
 ## Demo
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
